@@ -113,27 +113,30 @@
           //firebase문법 -> 업로드 작업이 끝나서 url가져오는 함수임
           업로드작업.snapshot.ref.getDownloadURL().then((url) => {
             console.log('업로드된 경로는', url);
+            //함수를 벗어나면 url이라는 변수가 없어짐 -> 그래서 아래 지은 var 저장할거 라인들을 다 안으로 넣음
+            var 저장할거 = {
+              이름: $('#title').val(),
+              가격: $('#price').val(),
+              내용: $('#content').val(),
+              날짜: new Date(),
+              //이미지를 넣을수 있지만 용량 제한으로 파이어베이스에 이미지 올리기에 적합하지 않음
+              //이미지를 그래서 url을 구해옴 어디서? 위에서 다시 작업
+              이미지: url
+            }
+            db.collection('product').add(저장할거).then((result) => {
+              //성공했을때 실행하는 코드
+              console.log(result); //성공후에 저장하는 자료의 정보가 다 담겨옴.
+              window.location.href = "/index.html";
+            }).catch(() => {
+              //실패했을때 실행하는 코드
+              console.log(err)
+            })
           });
         }
       );
 
 
-      var 저장할거 = {
-        이름: $('#title').val(),
-        가격: $('#price').val(),
-        내용: $('#content').val(),
-        날짜: new Date(),
-        //이미지를 넣을수 있지만 용량 제한으로 파이어베이스에 이미지 올리기에 적합하지 않음
-        //이미지를 그래서 url을 구해옴 어디서? 위에서 다시 작업
-      }
-      db.collection('product').add(저장할거).then((result) => {
-        //성공했을때 실행하는 코드
-        console.log(result); //성공후에 저장하는 자료의 정보가 다 담겨옴
-        window.location.href = "/index.html";
-      }).catch(() => {
-        //실패했을때 실행하는 코드
-        console.log(err)
-      })
+
     })
     // db.collection('product').add({이름 : '변기'})
 
